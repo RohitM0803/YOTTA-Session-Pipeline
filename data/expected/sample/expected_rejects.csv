@@ -1,0 +1,11 @@
+row_number,reject_reason
+9,conflicting_duplicate_event
+11,duplicate_event
+12,duplicate_event
+18,malformed_row
+19,invalid_timestamp
+20,missing_timestamp
+21,missing_required_field
+31,duplicate_event
+32,invalid_reference_key
+40,duplicate_event
