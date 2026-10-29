@@ -1,0 +1,20 @@
+{
+  "seed": 42,
+  "rows": 40,
+  "format": "csv",
+  "gap_minutes": 30,
+  "users": 8,
+  "expected_sessions": 11,
+  "valid_unique_events": 30,
+  "expected_rejects": 10,
+  "expected_rejects_by_reason": {
+    "conflicting_duplicate_event": 1,
+    "duplicate_event": 4,
+    "invalid_reference_key": 1,
+    "invalid_timestamp": 1,
+    "malformed_row": 1,
+    "missing_required_field": 1,
+    "missing_timestamp": 1
+  },
+  "events_file": "data/sample/events.csv"
+}
