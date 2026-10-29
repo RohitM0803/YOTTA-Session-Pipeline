@@ -1,0 +1,7 @@
+{
+  "db_path": "out/sessions.db",
+  "report_dir": "out/reports",
+  "gap_minutes": 30,
+  "column_map": {},
+  "max_reject_rate": 1.0
+}

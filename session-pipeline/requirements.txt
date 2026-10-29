@@ -1,0 +1,3 @@
+# The pipeline itself uses ONLY the Python standard library (no install needed).
+# pytest is optional: the tests are plain unittest, so `python -m unittest discover` works without it.
+pytest>=7.0
