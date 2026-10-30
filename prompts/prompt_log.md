@@ -1,10 +1,8 @@
 # Prompt log
 
-Every prompt I submitted to AI tools while building this project, in order. Tool: **Claude (Anthropic) in claude.ai**, one continuous chat.
-Responses are not included (optional per the submission guidelines). Long pasted documents are summarised in [brackets] instead of repeated.
-Spelling is kept exactly as I typed it.
+This is my best available record of prompts used while building and reviewing the project, grouped by AI tool and date. Responses are omitted, as the submission guidelines allow. Long pasted documents are summarized in brackets rather than repeated. Prompt wording is retained where available.
 
-**Limitation:** the chat tool does not export a timestamped prompt list, so this log was assembled by hand from the chat; order is exact, per-prompt timestamps are not recorded.
+**Limitation:** Claude did not provide an exportable timestamped prompt list. I assembled the Claude entries by hand; their order is preserved, but exact prompt timestamps are unavailable. Some earlier prompts from other Claude sessions could not be recovered. I have not reconstructed or invented them.
 
 ## Planning and understanding (Wed, Oct 28)
 
@@ -44,4 +42,16 @@ Spelling is kept exactly as I typed it.
 
 17. complte the PLAN.md now
 
-These are the only additional prompts visible in the current assistant session. Earlier prompts from other tools or sessions are not available here and have not been reconstructed.
+These are the additional Claude prompts available from the build session. Other earlier prompts that could not be recovered are not reconstructed.
+
+## Submission review and final checks (Fri, Oct 30) — OpenAI Codex in the IDE
+
+1. [Pasted the YottaFlex AI Recruitment Drive Submission Guidelines and Candidate Project FAQ, then asked:] “GO THROUGH THIS DOCUMENT TXT AND TELL ME HAVE U DONE EVERYTHING THATS MENTIONED IN IT. PAY DETAILED ATTENTION TO THE GITHUB RELATED TASKS. AND IF U HAVE DONT SOMETHING WRONG JUST LET ME KNOW WHAT, WHERE, AND WHAT NEEDS TO BE CHANGED.”
+
+2. “I previously shared the problem statement, so how will u review the project, is it good and worthy and is there any place to improve and do better.”
+
+3. “OKAY LETS START WITH SUBMISSION PROCESS. INORDER TO SUBMIT THE PROJECT WE WILL DO SOME FINAL CHECKS. YOU KNOW VERY WELL WHAT ALL THINGS ARE YET TO BE FINISHED. LETS RUN THE PROJECT FIRST THEN DO MAKE ALL THE THINGS ONE BY ONE. DO NOT COMMIT IT DIRECTLY TO GITHUB NOW BUT JUST KEEP IT IN MEMORY WE WILL DO IT AS I TELL U OR EITHER IN THE END WE WILL COMMIT EVRYTHING”
+
+4. “LOOK ALTHOUGH THE PROJECT IS AI MADE ITS STILL MINE. AND I WOULD BE JUDGED ON  MY CONTRIBUTION. SO KEEP THAT IN MIND AND I HAVE TO SUBMIT THIS PROJECT FOR EVALUATION. SO WHAT WE WILL DO IS MAKE IT MORE HUMANISED AND STRUCTURED. I ALSO SENT U 2 DOCUMENTS TXT SO CONSIDER THEM STRICTLY AND DO EVERYTHING AS TOLD. IN AI USAGE.MD KEEP MY CONTRIBUTION IN  MIND BECAUSE WE ARE ALLOWED TO USE LLMS BUT MY PERSONAL CONTRIBUTION MATTERS. ALSO DATA DICTIONARY NEEDS TO BE REVIEWED. GO AND WRITE A STRICT HUMANISED PROMPTS IN THE PROMPT.MD SHOULD FEEL WRITTEN BY ME. ALSO MAKE SURE U STRUCTURE THE PROJECT WELL”
+
+Responses are omitted. This Codex section records the prompts from the visible review/final-check conversation.

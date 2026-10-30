@@ -51,6 +51,15 @@ class ReconcileTests(PipelineTestCase):
         self.assertIn("session_fields_are_internally_consistent", failed(reconcile(c)))
         c.close()
 
+    def test_detects_event_counts_assigned_to_the_wrong_sessions(self):
+        c = self.conn()
+        c.execute("UPDATE sessions SET event_count = 1, is_bounce = 1 WHERE session_start = '2026-01-01T10:00:00Z'")
+        c.execute("UPDATE sessions SET event_count = 2, is_bounce = 0 WHERE session_start = '2026-01-01T13:00:00Z'")
+        failed_names = failed(reconcile(c))
+        c.close()
+        self.assertNotIn("stored_events_equal_sum_of_session_event_counts", failed_names)
+        self.assertIn("session_event_counts_match_stored_events", failed_names)
+
     def test_detects_orphan_event_user(self):
         c = self.conn()
         c.execute("DELETE FROM users")

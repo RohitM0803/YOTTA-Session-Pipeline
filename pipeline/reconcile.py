@@ -86,6 +86,14 @@ def reconcile(conn, run_id: Optional[str] = None) -> List[Check]:
     checks.append(Check("session_fields_are_internally_consistent", inconsistent == 0,
                         f"{inconsistent} sessions with inconsistent duration/event_count/is_bounce"))
 
+    miscounted = _scalar(conn, """
+        SELECT COUNT(*) FROM sessions s WHERE s.event_count != (
+            SELECT COUNT(*) FROM events e WHERE e.user_id = s.user_id
+              AND e.event_ts BETWEEN s.session_start_ts AND s.session_end_ts)
+    """)
+    checks.append(Check("session_event_counts_match_stored_events", miscounted == 0,
+                        f"{miscounted} sessions with event_count different from events in their time range"))
+
     gaps = [r[0] for r in conn.execute("SELECT DISTINCT gap_seconds FROM sessions")]
     checks.append(Check("all_sessions_built_with_one_gap_setting", len(gaps) <= 1, f"gap_seconds in use: {gaps}"))
 

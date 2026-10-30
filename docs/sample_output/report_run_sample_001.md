@@ -57,6 +57,7 @@ Reject rate: 25.00%
 | every_event_falls_inside_a_session | PASS | 0 events outside sessions |
 | sessions_per_user_are_separated_by_more_than_the_gap | PASS | 0 session pairs closer than the gap or overlapping |
 | session_fields_are_internally_consistent | PASS | 0 sessions with inconsistent duration/event_count/is_bounce |
+| session_event_counts_match_stored_events | PASS | 0 sessions with event_count different from events in their time range |
 | all_sessions_built_with_one_gap_setting | PASS | gap_seconds in use: [1800] |
 | events_reference_known_users | PASS | 0 events with unknown user |
 | sessions_match_answer_key | PASS | expected=11 actual=11 missing=0 unexpected=0 |
