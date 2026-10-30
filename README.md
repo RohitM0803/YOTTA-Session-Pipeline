@@ -1,11 +1,10 @@
 # Clickstream Sessionization Pipeline
 
-Turns raw clickstream / application events into **user sessions** using event-time gaps, and does it
-the way a client would need it done: out-of-order and duplicate events are handled, bad records are
-quarantined with a reason, reruns are safe, and every run proves that its numbers add up.
+This project turns raw clickstream or application events into **user sessions** using event-time gaps.
+It handles out-of-order and duplicate events, quarantines invalid records with a reason, and makes reruns safe.
 
 * Python 3.9+ and SQLite, **standard library only** (no install needed to run it).
-* 120 automated tests, a reproducible data generator with a separate answer key, a reconciliation report,
+* 121 automated tests, a reproducible data generator with a separate answer key, a reconciliation report,
   and a measured performance run on 100,000 rows.
 
 ---
@@ -87,7 +86,7 @@ flowchart LR
     H --> I[reconciliation + run report]
 ```
 
-All database changes of one run happen in **one transaction**: it is applied completely or not at all.
+Event, user, session, and successful-run reject changes are applied in **one data transaction**. The `RUNNING` audit row is recorded before that transaction; if processing fails, the data transaction is rolled back and a separate transaction records the failed run and captured rejects.
 
 ### Business rule (the core)
 
@@ -138,8 +137,9 @@ with a clear `failure_reason` and loads nothing. See [docs/DATA_DICTIONARY.md](d
   `--expected-dir` option compare the pipeline output to it exactly (sessions and rejects, on CSV and JSONL, several seeds).
 * **Reconciliation** (`pipeline/reconcile.py`, run automatically after every `run`):
   rows read = rejected + inserted + already loaded; reject table matches the run counter; stored events = sum of
-  session event counts; every event lies inside a session of its user; sessions of one user never overlap or sit
-  closer than the gap; session fields are internally consistent; events reference known users.
+  session event counts; every event lies inside exactly one session of its user; each session's event count matches
+  its stored events; sessions of one user never overlap or sit closer than the gap; session fields are internally
+  consistent; events reference known users.
 * **Mutation check:** deliberately breaking the gap rule, de-duplication, gap-change rebuild and rollback each made the suite fail.
 
 ## 5. Performance
@@ -162,7 +162,7 @@ sql/schema.sql       table definitions;  sql/sample_queries.sql  example analyti
 tests/               unittest suite (also runs under pytest)
 data/sample/         40-row starter input;  data/expected/sample/  its answer key
 docs/                DATA_DICTIONARY, DECISIONS (trade-offs), AI_USAGE, PERFORMANCE, sample_output/
-prompts/             full prompt history
+prompts/             available prompt record; missing earlier history is disclosed
 config.json          example configuration
 ```
 
@@ -173,14 +173,14 @@ columns; deterministic IDs (`session_id = "ses_" + sha1(user_id|session_start)[:
 ## 7. Assumptions
 
 * Events carry a unique `event_id`; the source is at-least-once delivery, so duplicates are expected.
-* Timestamps without an offset are UTC. Sub-second precision is truncated to whole seconds.
+* Timestamps without an offset are UTC. Fractional seconds are discarded; events that then share a second are ordered by `event_id`, so sub-second ordering and boundary classification can change.
 * The first version of a duplicated `event_id` wins (in file order, then by earlier runs); later conflicting versions are rejected, never overwritten.
-* A user in no `users` list is treated as an invalid reference only when a users list has been loaded.
-* Row numbers are physical line numbers (CSV header = line 1).
+* Users are accumulated in the database. If none have ever been loaded, reference checks are skipped unless a users file is explicitly supplied. An empty users file on a fresh database enables the check against an empty set; on a populated database it adds no users and existing users remain valid.
+* Row numbers are physical line numbers (CSV header = line 1); for a quoted CSV record spanning lines, the number points to the line where the record ends.
 
 ## 8. Known limitations and next steps
 
-* Batch only: a file is read into memory (fine for millions of rows, not billions). Next: chunked reading, then streaming.
+* Batch only: each input file is read into memory. The documented workload is 100,000 rows; measure memory and runtime before using substantially larger files. Next: chunked reading, then streaming.
 * Validation is single-threaded Python; the dominant stage in the benchmark. Next: multiprocessing or a columnar engine (DuckDB/Polars).
 * SQLite allows one writer at a time; a warehouse (Postgres/BigQuery) would replace `store.py`.
 * `session_id` is derived from the session start, so a very late event that moves a session's start changes its ID (old row is replaced, never duplicated).
