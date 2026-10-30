@@ -1,38 +1,154 @@
-# AI use and my contribution
+# AI Use and My Contribution
 
-I used AI while building and reviewing this project. I am responsible for the project I submit, and I want to be clear about which parts I directed and which parts AI helped implement.
+## 1. Overview
 
-## My contribution
+AI tools were used during the development and review of this project. I used them to understand the problem statement, plan the implementation, generate code drafts, develop tests, troubleshoot issues, and improve the project documentation.
 
-I chose to build a practical clickstream sessionization project and set the direction: it should run locally on Windows, handle messy and late-arriving event data, be testable, and be clear enough for me to learn and explain. I asked for a detailed plan, edge-case coverage, setup instructions, and documentation of the design choices. I also directed this final review and asked that local changes stay uncommitted until I decide to commit them.
+The initial implementation was generated largely with AI assistance, particularly Claude. I do not claim that I independently wrote every Python module, SQL query, or test case. My contribution was primarily in defining the project direction, communicating requirements, guiding the development process, executing the project, reviewing its outputs, and directing improvements.
 
-AI generated much of the implementation and test code. I do not claim that I independently wrote all of it. My responsibility is to review the result, understand the core behavior, check that it works, and be ready to explain the decisions and limitations. I am still working through that personal review; the assistant-run checks below are not a substitute for it.
+I take responsibility for the final submission and understand that I must be able to explain its implementation, design decisions, behaviour, and limitations.
 
-## AI tools used
+## 2. AI Tools Used
 
-- **Claude (Anthropic), through claude.ai:** planning, code and test drafts, documentation drafts, and explanations during the initial build.
-- **OpenAI Codex in the IDE:** submission review, sample and large-data verification, and a per-session reconciliation check with a regression test.
+### Claude (Anthropic) – claude.ai
 
-The available prompts are recorded in [`prompts/prompt_log.md`](../prompts/prompt_log.md). Some earlier Claude prompts could not be recovered; this limitation is disclosed in that file. AI responses are omitted.
+Claude was the primary AI tool used during the initial development of the project.
 
-## Where AI helped most
+It assisted with:
+- Understanding the recruitment challenge and breaking down the problem statement.
+- Preparing the development roadmap and project structure.
+- Generating much of the initial Python pipeline implementation.
+- Drafting the SQL schema and related queries.
+- Generating test cases for normal scenarios and edge cases.
+- Preparing sample data and the synthetic data generator.
+- Drafting the README, data dictionary, design notes, and other documentation.
+- Explaining implementation concepts and helping troubleshoot development issues.
 
-Claude generated much of the pipeline, tests, sample data generator, SQL, and first drafts of the documentation. I relied on it heavily for implementation. Codex reviewed the finished project and identified that reconciliation did not compare each session's recorded event count with the events in that session's time range.
+Claude generated a substantial portion of the initial implementation. Its output was used as a starting point and required review and verification.
 
-## Checks performed by the coding assistant
+### OpenAI Codex – IDE
 
-These are assistant-run checks, not claims that I personally ran or independently reviewed every result.
+Codex was used during the review and final verification stage.
 
-- Earlier build review: the assistant reported 120 tests passing, along with successful sample and 100,000-row runs. Those results are recorded as historical checks from that review.
-- On 2026-10-30, Codex ran the sample pipeline against a fresh database under `out/final_review/`: 30 events inserted, 10 rejected, and 11 sessions written. Reconciliation and answer-key checks passed. A rerun inserted 0 events and rebuilt 0 sessions; the sample SQL queries ran successfully.
-- Codex added a check that compares every session's `event_count` with stored events in its time range, plus a regression test. The 11 reconciliation tests passed, followed by the full suite: 121 tests.
-- Codex generated and processed 100,000 rows in `out/final_review/`: 94,000 events inserted, 6,000 rejected, and 14,534 sessions. Reconciliation and answer-key comparisons passed.
+It assisted with:
+- Reviewing the project against the recruitment requirements.
+- Examining the repository structure and submission readiness.
+- Reviewing reconciliation logic and identifying a missing per-session validation.
+- Adding a check comparing each session's recorded event count with the events assigned to that session.
+- Adding a regression test for the reconciliation improvement.
+- Running the sample pipeline and larger synthetic-data workload.
+- Reviewing test results, reconciliation results, and generated reports.
+- Identifying documentation and final-submission items requiring attention.
 
-## What I still need to review personally
+### OpenAI ChatGPT
 
-Before submission, I need to make sure I can explain the session boundary rule, ordering, duplicate handling, transaction and rollback behavior, reconciliation checks, and known limitations. I will update this statement with what I personally reviewed and changed after doing that work; I will not claim understanding or validation I have not completed.
+ChatGPT was used for additional project guidance, explanations, and continuity during the development and submission-review process.
 
-## Limitations of AI-assisted work
+It assisted with:
+- Understanding the overall project requirements.
+- Explaining development and verification steps in a beginner-friendly manner.
+- Reviewing implementation issues and test results.
+- Discussing benchmark safety and reference-validation behaviour.
+- Organising the final review process and identifying outstanding submission tasks.
 
-- The generated tests reflect assumptions in the prompts. The separate generated answer key provides another check, but it does not eliminate that risk.
-- The performance figures describe one machine and one generated workload; they are not a guarantee for other environments or larger data volumes.
+The prompt history is maintained separately in `prompts/prompt_log.md`.
+
+## 3. My Contribution and Responsibilities
+
+Although AI tools generated much of the implementation, I directed the project and participated in its development and review.
+
+My contributions included:
+
+### Problem definition and planning
+- Selected the clickstream sessionisation problem as the focus of the project.
+- Established the objective of building a locally runnable data engineering pipeline.
+- Identified important requirements such as event-time processing, duplicate handling, missing timestamps, late-arriving events, and session boundary conditions.
+- Requested a structured development roadmap and divided the work into manageable stages.
+- Prioritised correctness, data quality, testing, and explainability over unnecessary additional technologies.
+
+### Development environment and execution
+- Worked with the project environment on Windows using PowerShell.
+- Set up and used the Python virtual environment.
+- Followed the implementation and execution steps for the pipeline.
+- Ran project commands, tests, and benchmark workloads.
+- Examined generated outputs and execution reports.
+
+### Review and validation
+- Directed reviews against the original recruitment problem statement and submission guidelines.
+- Asked for additional attention to edge cases, idempotency, error handling, and reconciliation.
+- Participated in investigating reference-validation behaviour when an explicitly supplied users file contains no user records.
+- Requested safer benchmark behaviour to prevent unrelated files from being deleted.
+- Reviewed test results and large-data benchmark outputs.
+- Kept local changes uncommitted until the final review and approval process.
+
+### Project ownership
+I am responsible for reviewing the submitted code, understanding the system's behaviour, checking the generated results, and being able to explain the design decisions and limitations. I am continuing to work through the implementation to strengthen my technical understanding.
+
+I distinguish between code generated by AI, tasks I directed, and verification activities performed with assistance. I do not present AI-generated implementation as code independently written by me.
+
+## 4. Verification and Improvements
+
+The following checks were reported during the development and review process. They are recorded as assistant-assisted verification results rather than claims that I independently implemented or reviewed every test.
+
+### Earlier development checks
+- The assistant reported 120 passing tests, along with successful sample and 100,000-row benchmark runs.
+- A benchmark safety correction was tested to confirm that unrelated files in the working directory were preserved.
+- Reference validation was updated to distinguish between an explicitly supplied empty users file and the absence of reference data.
+
+### Final review checks – October 30, 2026
+- The sample pipeline was executed against a fresh database under `out/final_review/`.
+- The sample execution reported 30 events inserted, 10 rejected, and 11 sessions written.
+- Reconciliation and expected-output comparisons passed.
+- A rerun inserted zero additional events and rebuilt zero sessions.
+- The sample SQL queries executed successfully.
+- A per-session reconciliation check was added to compare the recorded `event_count` with the number of stored events assigned to that session.
+- A regression test was added for this check.
+- The reconciliation test suite reported 11 passing tests, followed by a full test-suite result of 121 passing tests.
+- A 100,000-row synthetic workload was generated and processed.
+- The large-data run reported 94,000 events inserted, 6,000 rejected, and 14,534 sessions.
+- Reconciliation and expected-output comparisons passed for that run.
+
+These results are tied to the reported execution environment and test data. They should not be interpreted as guarantees of performance or correctness in every production environment.
+
+## 5. Limitations and Engineering Considerations
+
+There are some limitations associated with AI-assisted development:
+
+- Generated code and tests may reflect assumptions in the original prompts.
+- Passing tests do not guarantee that every possible input or production scenario has been covered.
+- Generated expected outputs provide an additional validation reference but do not independently eliminate the possibility of shared assumptions or errors.
+- Benchmark results depend on the machine, configuration, database, and generated workload.
+- The implementation has design trade-offs and limitations that should be understood before using it in a production environment.
+
+The project should therefore be evaluated based on the actual implementation, its tests, documented assumptions, and observed behaviour rather than on claims of production readiness.
+
+## 6. Further Personal Review
+
+Before considering the project fully understood, I intend to strengthen my knowledge of:
+
+- Event validation and data-quality rules.
+- Duplicate detection and conflicting duplicate handling.
+- Event ordering and session boundary calculations.
+- Late-arriving event behaviour.
+- Database transactions, rollback, and rerun handling.
+- Session-level reconciliation and data consistency.
+- SQL queries and performance measurements.
+- Known limitations and possible future improvements.
+
+I will update this section as I complete my own review. I do not claim to have independently mastered or verified every implementation detail at this stage.
+
+## 7. Prompt History
+
+The available prompts used during development and review are recorded in:
+
+`prompts/prompt_log.md`
+
+The prompt history separates Claude, OpenAI Codex, and ChatGPT interactions. Where exact prompt wording or complete history is unavailable, that limitation is disclosed rather than inventing missing records.
+
+## 8. Declaration
+
+AI tools were used extensively to accelerate the development of this project, particularly during initial code generation. I have disclosed their involvement rather than presenting the implementation as entirely independently written.
+
+My responsibility is to ensure that the submitted project is runnable, that its behaviour is verified to the extent documented, and that I can explain the system and its engineering decisions honestly.
+
+The project represents an AI-assisted development effort directed and reviewed by me, with further personal technical learning and review ongoing.
